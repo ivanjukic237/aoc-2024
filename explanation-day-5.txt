@@ -1,0 +1,69 @@
+Let's take a look at the first sequence from the example input: 75,47,61,53,29.
+We can manually see which rules apply to this sequence:
+
+47|53
+75|29
+75|53
+53|29
+61|53
+61|29
+75|47
+47|61
+75|61
+47|29
+
+Let's take 47 as an example. If we look at all the rules that has 47 on the left side we get:
+
+47|53
+47|61
+47|29
+
+We now know that there are 3 numbers after 47.
+
+[...,47,-,-,-]
+
+If we look at all the rules that has 47 on the right side we get:
+
+75|47
+
+From this we can see that there is one number on the left side of number 47. So we get:
+
+[-,47,-,-,-]
+
+Let's take 75 for example. We can see that there are 4 occurrences of 75 on the left side, and 0 on the right side.
+We then know that our sorted sequence is:
+
+[75,47,-,-,-]
+
+If we continue the process we get the sequence:
+
+[75,47,61,53,29].
+
+For this example this sorted sequence is the same as the initial sequence.
+
+For every sequence, we can count the number of occurrences of the number on the left side of the rule and subtract the
+number of occurrences of the number from the right side. If we do that we can get:
+
+75: n = 4 - 0 = 4
+47: n = 3 - 1 = 2
+61: n = 2 - 2 = 0
+53: n = 1 - 2 = -1
+29: n = 0 - 3 = -3
+
+We can sort the array based on the value n and get the correct sequence.
+
+If there are numbers in the initial sequence that are not contained in the rules, we let those numbers stay on the same index.
+
+For example, sequence:
+
+[29,61,555,47,53,75,444].
+
+We sort the sequence ignoring 555 and 444 and get [75,47,555,61,53,29,444]. We only sort the sequence 29,61,47,53,75.
+
+If the initial sequence is the same as the sorted one, we sum the middle number for part 1, and if it is not, we sum the
+middle number for part 2.
+
+Most important thing is that we initially take only rules where both left and right number are in the sequence.
+For example, if we take in consideration another rule 999|61 we would have for 61: n = 2 - 3 = -1 and n will
+be the same as 53, and our algorithm would not work. Rule 999|61 doesn't matter for our sequence because number 999 is not
+in it.
