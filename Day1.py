@@ -1,27 +1,51 @@
-from collections import Counter
+from math import ceil
+
+
+def part1():
+    with open("day1.txt", 'r') as file:
+        index = 50
+        count = 0
+        for line_number, line in enumerate(file, start=1):
+            if line[0] == 'R':
+                index = (int(line[1:]) + index) % 100
+            else:
+                index = 100 - (int(line[1:]) - index) % 100
+
+            index = abs(index)
+
+            if index == 100:
+                index = 0
+
+            if index == 0:
+                count += 1
+
+        print(count)
+
+
+def part2():
+    with open("day1.txt", 'r') as file:
+        index = 50
+        count = 0
+        for line_number, line in enumerate(file, start=1):
+            line_number = int(line[1:])
+            if line[0] == 'R':
+                count += int((index + line_number) / 100)
+                index = (line_number + index) % 100
+            else:
+                real_index = index - line_number
+                # guaranteed to pass 0 once, if we were at 0 we didn't pass it
+                if index != 0 and real_index <= 0:
+                    count += 1
+                count += abs(int((index - line_number) / 100))
+
+                index = (index - line_number) % 100
+
+            index = abs(index)
+
+            if index == 100:
+                index = 0
+        print(count)
+
 if __name__ == "__main__":
-    list1 = []
-    list2 = []
-    with open("day1.txt", "r") as file:
-        for line in file:
-            list1.append(int(line.split()[0]))
-            list2.append(int(line.split()[1]))
-
-    list1.sort()
-    list2.sort()
-
-    print(list1)
-    suma = 0
-    for item1, item2 in zip(list1, list2):
-        suma += abs(item1 - item2)
-
-    print(suma)
-
-    mapa = Counter(list2)
-    suma2 = 0
-    for item1 in list1:
-        if item1 in mapa:
-            suma2 += item1 * mapa.get(item1)
-
-    print(suma2)
-
+    part1()
+    part2()
